@@ -1,16 +1,77 @@
 # latihanapi
 
-A new Flutter project.
+Sebelum itu siapkan file index.php
+yang berisi
+(perbedaan terdapat di json encode method put)
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+<?php
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
+// Koneksi ke database
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "latihanapi";
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Koneksi ke database gagal: " . $conn->connect_error);
+}
+$method = $_SERVER["REQUEST_METHOD"];
+if ($method === "GET") {
+    // Mengambil data mahasiswa
+    $sql = "SELECT * FROM mahasiswa";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        $mahasiswa = array();
+        while ($row = $result->fetch_assoc()) {
+            $mahasiswa[] = $row;
+        }
+        echo json_encode($mahasiswa);
+    } else {
+        echo "Data mahasiswa kosong.";
+    }
+}
+if ($method === "POST") {
+    // Menambahkan data mahasiswa
+    $data = json_decode(file_get_contents("php://input"), true);
+    $nama = $data["nama"];
+    $jurusan = $data["jurusan"];
+    $sql = "INSERT INTO mahasiswa (nama, jurusan) VALUES ('$nama', '$jurusan')";
+    if ($conn->query($sql) === TRUE) {
+        $data['pesan'] = 'berhasil';
+        //echo "Berhasil tambah data";
+    } else {
+        $data['pesan'] = "Error: " . $sql . "<br>" . $conn->error;
+    }
+    echo json_encode($data);
+}
+if ($method === "PUT") {
+    // Memperbarui data mahasiswa
+    $data = json_decode(file_get_contents("php://input"), true);
+    $id = $data["id"];
+    $nama = $data["nama"];
+    $jurusan = $data["jurusan"];
+    $sql = "UPDATE mahasiswa SET nama='$nama', jurusan='$jurusan' WHERE id=$id";
 
-A few resources to get you started if this is your first Flutter project:
+    if ($conn->query($sql) === TRUE) {
+        $data['pesan'] = 'berhasil';
+        //echo "Berhasil tambah data";
+    } else {
+        $data['pesan'] = "Error: " . $sql . "<br>" . $conn->error;
+    }
+    echo json_encode($data);
+}
+if ($method === "DELETE") {
+    // Menghapus data mahasiswa
+    $id = $_GET["id"];
+    $sql = "DELETE FROM mahasiswa WHERE id=$id";
+    if ($conn->query($sql) === TRUE) {
+        $data['pesan'] = 'berhasil';
+    } else {
+        $data['pesan'] = "Error: " . $sql . "<br>" . $conn->error;
+    }
+    echo json_encode($data);
+}
+$conn->close();
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
