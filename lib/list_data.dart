@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:latihanapi/detail_data.dart';
 import 'package:latihanapi/form_edit.dart';
-import 'package:latihanapi/lihat_data.dart';
 import 'package:latihanapi/side_menu.dart';
 import 'package:latihanapi/tambah_data.dart';
 import 'package:flutter/material.dart';

@@ -10,7 +10,7 @@ class DetailData extends StatelessWidget {
   final String nama;
   final String jurusan;
 
-  DetailData(this.nama, this.jurusan);
+  const DetailData(this.nama, this.jurusan, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +24,12 @@ class DetailData extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Text(
               "NAMA : $nama", // Menggunakan variabel nama
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18.0,
                 color: Colors.black,
               ),
@@ -37,13 +37,13 @@ class DetailData extends StatelessWidget {
             ),
             Text(
               "JURUSAN : $jurusan", // Menggunakan variabel jurusan
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18.0,
                 color: Colors.black,
               ),
               textAlign: TextAlign.center,
             ),
-            Text(
+            const Text(
               "© Universitas Jenderal Soedirman",
               style: TextStyle(
                 fontSize: 14.0,
